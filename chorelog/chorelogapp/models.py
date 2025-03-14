@@ -27,6 +27,9 @@ class Child(models.Model):
     def __str__(self):
         return f"Child: {self.user.get_full_name()} (Parent: {self.parent.user.get_full_name()})"
     
+    class Meta:
+        verbose_name_plural = "children"
+    
 class Chore_Definition(models.Model):
     name = models.CharField(max_length=50)
     minute_value = models.IntegerField()
