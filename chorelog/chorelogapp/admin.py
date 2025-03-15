@@ -5,12 +5,8 @@ from .models import User, Chore_Definition, Work, Play
 class MyUserAdmin(UserAdmin):
     model = User
 
-    fieldsets = UserAdmin.fieldsets + (
-            (None, {'fields': ('user_type','parent')}),
-    )
-    add_fieldsets = UserAdmin.fieldsets + (
-            (None, {'fields': ('user_type','parent')}),
-    )
+    fieldsets = UserAdmin.fieldsets + ((None, {"fields": ["user_type","parent"]}),)
+    add_fieldsets = UserAdmin.add_fieldsets + ((None, {"fields": ["user_type","parent"]}),)
 
 admin.site.register(User, MyUserAdmin)
 admin.site.register(Chore_Definition)
