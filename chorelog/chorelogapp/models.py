@@ -23,7 +23,7 @@ class Work(models.Model):
     date_logged = models.DateField(auto_now_add=True)
 
     def __str__(self):
-        return f"Chore: {self.chore.name} logged on {self.date_logged}"
+        return f"Chore: {self.chore.name} logged by {self.done_by} on {self.date_logged}"
 
 class Play(models.Model):
     game = models.CharField(max_length=50)
@@ -32,4 +32,4 @@ class Play(models.Model):
     date_logged = models.DateField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.game} for {self.minutes_played} on {self.date_logged}"
+        return f"{self.game} played by {self.child} for {self.minutes_played} minutes on {self.date_logged}"
