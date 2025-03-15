@@ -32,4 +32,4 @@ class Play(models.Model):
     date_logged = models.DateField(auto_now_add=True)
 
     def __str__(self):
-        return f"Chore: {self.game} logged on {self.date_logged}"
+        return f"{self.game} for {self.minutes_played} on {self.date_logged}"
