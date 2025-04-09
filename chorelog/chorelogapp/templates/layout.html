@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    {% block title %}
+      <title>Log</title>
+    {% endblock %}
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="https://unpkg.com/open-props"/>
+    <link rel="stylesheet" href="https://unpkg.com/open-props/normalize.min.css"/>
+    <link rel="stylesheet" href="https://unpkg.com/open-props/buttons.min.css"/>
+    <!-- Add additional CSS in static file -->
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+  </head>
+  <body>
+        <nav>
+          {% block nav %}
+            <ul>
+              <li><a href="{% url 'index' %}">Home</a></li>
+              <li><a href="">two</a></li>
+              <li><a href="">three</a></li>
+            </ul>
+          {% endblock %}
+        </nav>
+        <main>{% block content %}{% endblock %}</main>
+  </body>
+</html>

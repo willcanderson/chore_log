@@ -1,0 +1,7 @@
+nav {
+    background: var(--purple-6);
+}
+
+nav a {
+    color: var(--gray-0);
+}
