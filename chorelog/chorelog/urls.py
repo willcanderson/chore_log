@@ -27,7 +27,7 @@ urlpatterns = [
 
 # Add paths from chorelogapp application
 urlpatterns += [
-    path('/chorelogapp/', include('chorelogapp.urls')),
+    path('chorelogapp/', include('chorelogapp.urls')),
 ]
 
 # Add URL maps to redirect the base URL to the application
