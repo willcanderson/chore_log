@@ -1,32 +1,48 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.urls import reverse
 from .models import User, Chore_Definition, Work, Play
+from django.contrib.auth import authenticate, login, logout
+from django.contrib import messages
 
 # Create your views here.
 
 def index(request):
-    if request.user.user_type == 'PARENT':
-        children = request.user.children.all()
-        chores = request.user.defined_chores.all()
+    if request.user.is_authenticated:
+        if request.user.user_type == 'PARENT':
+            children = request.user.children.all()
+            chores = request.user.defined_chores.all()
 
-        return render(request, "index-for-parents.html", {
-            'children': children,
-            "chores": chores,
-    })
+            return render(request, "index-for-parents.html", {
+                'children': children,
+                "chores": chores,
+        })
 
-    if request.user.user_type == 'CHILD':
-        work = request.user.work_done.all()
-        play = request.user.play_done.all()
+        if request.user.user_type == 'CHILD':
+            work = request.user.work_done.all()
+            play = request.user.play_done.all()
 
-        return render(request, "index-for-children.html", {
-            'work': work,
-            "play": play,
-    })
+            return render(request, "index-for-children.html", {
+                'work': work,
+                "play": play,
+        })
 
     return render(request, "start.html")
 
-def login(request):
-    pass
-    #TODO: Investigate Django's provided log-in form
+def login_view(request):
+    if request.method == "POST":
+        username = request.POST["username"]
+        password = request.POST["password"]
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+            return redirect(reverse("index"))
+        else:
+            # https://docs.djangoproject.com/en/5.2/ref/contrib/messages/#adding-a-message
+            messages.error(request, "Invalid username or password.")
+            return render(request, "login.html")
+
+    return render(request, "login.html")
 
 def register_parent(request):
     pass
@@ -38,8 +54,9 @@ def register_child(request):
     #TODO: parent's email address, username, password. Error message if parent's email is not found.
     # Maybe parent should get a request that they have to accept.
 
-def logout(request):
-    pass
+def logout_view(request):
+    logout(request)
+    return redirect(reverse('index'))
 
 def full_log(request):
     pass
