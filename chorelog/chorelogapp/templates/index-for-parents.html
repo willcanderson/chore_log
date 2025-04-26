@@ -4,11 +4,11 @@
 
   <h1>Hello, {{ user.username }}</h1>
   
-  {% if children %}
+  {% if child_list %}
   <h2>Children</h2>
   <ul>
-    {% for child in children %}
-    <li>{{ child.username }}</li>
+    {% for child in child_list %}
+    <li>{{ child.username }}, {{ child.balance }}</li>
     {% endfor %}
   </ul>
   {% endif %}

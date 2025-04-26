@@ -7,34 +7,53 @@ from django.db.models import Value, F, Sum
 
 # Create your views here.
 
+def get_log_and_balance(user):
+    work = user.work_done.all().annotate(
+        log_name=F('chore__name'),
+        type=Value("work"),
+        time_value=F('chore__minute_value')
+        ).values('log_name', 'date_logged', 'type', 'time_value')
+    play = user.play_done.all().annotate(
+        log_name=F('game'),
+        type=Value("play"),
+        time_value=F('minutes_played')
+        ).values('log_name', 'date_logged', 'type', 'time_value')
+    log_items = work.union(play).order_by("-date_logged")
+    if work:
+        work_balance = work.aggregate(Sum('time_value'))['time_value__sum']
+    else:
+        work_balance = 0
+    if play:
+        play_balance = play.aggregate(Sum('time_value'))['time_value__sum']
+    else:
+        play_balance = 0
+
+    balance = work_balance - play_balance
+    return log_items, balance
+
+
 def index(request):
     if request.user.is_authenticated:
         if request.user.user_type == 'PARENT':
             children = request.user.children.all()
+            child_list = []
+            for child in children:
+                log_items, balance = get_log_and_balance(child)
+                child = {
+                    'username': child.username,
+                    'balance': balance
+                }
+                child_list.append(child)
             chores = request.user.defined_chores.all()
 
             return render(request, "index-for-parents.html", {
-                'children': children,
+                'child_list': child_list,
                 "chores": chores,
         })
 
         if request.user.user_type == 'CHILD':
-            work = request.user.work_done.all().annotate(
-                log_name=F('chore__name'),
-                type=Value("work"),
-                time_value=F('chore__minute_value')
-                ).values('log_name', 'date_logged', 'type', 'time_value')
-            play = request.user.play_done.all().annotate(
-                log_name=F('game'),
-                type=Value("play"),
-                time_value=F('minutes_played')
-                ).values('log_name', 'date_logged', 'type', 'time_value')
-            log_items = work.union(play).order_by("-date_logged")
-            balance = work.aggregate(Sum('time_value'))['time_value__sum'] - play.aggregate(Sum('time_value'))['time_value__sum']
-
+            log_items, balance = get_log_and_balance(request.user)
             return render(request, "index-for-children.html", {
-                'work': work,
-                "play": play,
                 "log_items": log_items,
                 "balance": balance
         })
