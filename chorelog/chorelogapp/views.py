@@ -3,6 +3,7 @@ from django.urls import reverse
 from .models import User, Chore_Definition, Work, Play
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
+from django.db.models import Value, F, Sum
 
 # Create your views here.
 
@@ -18,12 +19,24 @@ def index(request):
         })
 
         if request.user.user_type == 'CHILD':
-            work = request.user.work_done.all()
-            play = request.user.play_done.all()
+            work = request.user.work_done.all().annotate(
+                log_name=F('chore__name'),
+                type=Value("work"),
+                time_value=F('chore__minute_value')
+                ).values('log_name', 'date_logged', 'type', 'time_value')
+            play = request.user.play_done.all().annotate(
+                log_name=F('game'),
+                type=Value("play"),
+                time_value=F('minutes_played')
+                ).values('log_name', 'date_logged', 'type', 'time_value')
+            log_items = work.union(play).order_by("-date_logged")
+            balance = work.aggregate(Sum('time_value'))['time_value__sum'] - play.aggregate(Sum('time_value'))['time_value__sum']
 
             return render(request, "index-for-children.html", {
                 'work': work,
                 "play": play,
+                "log_items": log_items,
+                "balance": balance
         })
 
     return render(request, "start.html")

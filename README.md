@@ -12,6 +12,7 @@ This is the first project I've done that has two different types of users (apart
 
 - **Delivering different templates**: This was the first project I've done where a view delivers a drastically different template based on what type of user is logged in. Parents and children get entirely different index pages.
 - **More complicated permissions**: Parents can view their own index page and their children's pages, but not the pages of other parents or other parents' children. This was more complicated than previous projects, where the permissions were basically "you must be logged in to see this" and "you can only see your own stuff."
+- Merging two different models (work and play) in one view - liberal `annotation` to support a `union`. In retrospect I wonder whether I should have had a single `transaction` model using fields to differentiate between `work` and `play`, but that would have been difficult when kids pick work from a pre-defined list but can define any game they want for themselves.
 
 ### Front end
 

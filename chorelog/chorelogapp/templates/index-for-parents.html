@@ -1,12 +1,25 @@
 {% extends "layout.html" %}
 
 {% block content %}
-  <h1>Hello</h1>
-  <p>
-    Welcome to LocalLibrary, a website developed by
-    <em>Mozilla Developer Network</em>!
-  </p>
-  <h2>Dynamic content</h2>
-  <p>The library has the following record counts:</p>
+
+  <h1>Hello, {{ user.username }}</h1>
+  
+  {% if children %}
+  <h2>Children</h2>
+  <ul>
+    {% for child in children %}
+    <li>{{ child.username }}</li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+  
+  {% if chores %}
+  <h2>Chores</h2>
+  <ul>
+    {% for chore in chores %}
+    <li>{{ chore.name }}</li>
+    {% endfor %}
+  </ul>
+  {% endif %}
 
 {% endblock %}
