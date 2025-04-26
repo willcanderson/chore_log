@@ -19,15 +19,8 @@ def get_log_and_balance(user):
         time_value=F('minutes_played')
         ).values('log_name', 'date_logged', 'type', 'time_value')
     log_items = work.union(play).order_by("-date_logged")
-    if work:
-        work_balance = work.aggregate(Sum('time_value'))['time_value__sum']
-    else:
-        work_balance = 0
-    if play:
-        play_balance = play.aggregate(Sum('time_value'))['time_value__sum']
-    else:
-        play_balance = 0
-
+    work_balance = work.aggregate(Sum('time_value'))['time_value__sum'] or 0
+    play_balance = play.aggregate(Sum('time_value'))['time_value__sum'] or 0
     balance = work_balance - play_balance
     return log_items, balance
 
