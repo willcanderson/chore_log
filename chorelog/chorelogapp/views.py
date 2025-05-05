@@ -4,6 +4,7 @@ from .models import User, Chore_Definition, Work, Play
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.db.models import Value, F, Sum
+from django.db import IntegrityError
 
 # Create your views here.
 
@@ -70,8 +71,29 @@ def login_view(request):
     return render(request, "login.html")
 
 def register_parent(request):
-    pass
     #TODO: Email address, username, password
+    if request.method == "POST":
+        username = request.POST["username"]
+        email = request.POST["email"]
+
+        # Ensure password matches confirmation
+        password = request.POST["password"]
+        confirmation = request.POST["confirmation"]
+        if password != confirmation:
+            messages.error(request, "Passwords do not match")
+            return render (request, "register-parent.html")
+        
+        # Attempt to create new user
+        try:
+            user = User.objects.create_user(username, email, password, user_type='PARENT')
+            user.save()
+        except IntegrityError:
+            messages.error(request, "Username already taken")
+            return render (request, "register-parent.html")
+        login(request, user)
+        return redirect(reverse('index'))
+    else:
+        return render(request, "register-parent.html")
     # https://docs.djangoproject.com/en/5.2/topics/auth/customizing/#custom-users-and-the-built-in-auth-forms
 
 def register_child(request):
