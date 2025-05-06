@@ -132,8 +132,21 @@ def logout_view(request):
     logout(request)
     return redirect(reverse('index'))
 
-def full_log(request):
-    pass
+def full_log(request, username):
+    log_user = User.objects.get(username=username)
+
+    if request.user != log_user or log_user.parent:
+        messages.error(request, "Access not permitted")
+        return redirect(reverse('index'))
+           
+    log_username = log_user.username
+    log_items, balance = get_log_and_balance(log_user)
+    return render(request, "full-log.html", {
+        "log_items": log_items,
+        "balance": balance,
+        "username": log_username
+    })
+
     #TODO: View full log of credits and debits. Children can see their own. Parents can see their children's.
 
 def log_chore(request):

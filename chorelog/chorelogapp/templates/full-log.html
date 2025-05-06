@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+  <h1>{{ username }}</h1>
+
+  <p>Balance: {{ balance }}</p>
+  
+  {% if log_items %}
+  <table>
+    {% for item in log_items %}
+    <tr class="{{item.type}}">
+        <td>{{ item.log_name }}</td>
+        <td>{{ item.date_logged }}</td>
+        <td>{{ item.time_value }}</td>
+    </tr>
+    {% endfor %}
+</table>
+  {% endif %}
+  
+{% endblock %}
