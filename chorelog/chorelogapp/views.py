@@ -71,14 +71,13 @@ def login_view(request):
     return render(request, "login.html")
 
 def register_parent(request):
-    #TODO: Email address, username, password
     if request.method == "POST":
         username = request.POST["username"]
         email = request.POST["email"]
-
-        # Ensure password matches confirmation
         password = request.POST["password"]
         confirmation = request.POST["confirmation"]
+
+        # Ensure password matches confirmation
         if password != confirmation:
             messages.error(request, "Passwords do not match")
             return render (request, "register-parent.html")
@@ -90,16 +89,44 @@ def register_parent(request):
         except IntegrityError:
             messages.error(request, "Username already taken")
             return render (request, "register-parent.html")
+        
         login(request, user)
         return redirect(reverse('index'))
     else:
         return render(request, "register-parent.html")
-    # https://docs.djangoproject.com/en/5.2/topics/auth/customizing/#custom-users-and-the-built-in-auth-forms
 
 def register_child(request):
-    pass
-    #TODO: parent's email address, username, password. Error message if parent's email is not found.
-    # Maybe parent should get a request that they have to accept.
+    if request.method == "POST":
+        username = request.POST["username"]
+        parent_email = request.POST["parent-email"]
+        password = request.POST["password"]
+        confirmation = request.POST["confirmation"]
+
+        # Ensure password matches confirmation
+        if password != confirmation:
+            messages.error(request, "Passwords do not match")
+            return render (request, "register-child.html")
+        
+        # Check for parent
+        try:
+            parent = User.objects.get(email=parent_email)
+        except:
+            messages.error(request, "Parent not found")
+            return render(request, "register-child.html")
+        
+        # Attempt to create new user
+        try:
+            user = User.objects.create_user(username, email=None, password=password, user_type='CHILD', parent=parent)
+            user.save()
+        except IntegrityError:
+            messages.error(request, "Username already taken")
+            return render (request, "register-child.html")
+        
+        login(request, user)
+        return redirect(reverse('index'))
+    else:
+        return render(request, "register-child.html")
+    #TODO: Maybe parent should get a request that they have to accept.
 
 def logout_view(request):
     logout(request)

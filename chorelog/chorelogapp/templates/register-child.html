@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+  <h1>Register as a child</h1>
+  
+  {% if messages %}
+  <ul class="messages">
+      {% for message in messages %}
+      <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+      {% endfor %}
+  </ul>
+{% endif %}
+
+<form action="{% url 'register-child' %}" method="post">
+    {% csrf_token %}
+    <div>
+        <label for="parent-email">Your parent's email address</label>
+        <input type="email" name="parent-email">
+    </div>
+    <div>
+        <label for="username">Username</label>
+        <input autofocus type="text" name="username">
+    </div>
+    <div>
+        <label for="password">Password</label>
+        <input type="password" name="password">
+    </div>
+    <div>
+        <label for="confirmation">Confirm password</label>
+        <input type="password" name="confirmation">
+    </div>
+    <input type="submit" value="Register">
+</form>
+
+Already have an account? <a href="{% url 'login' %}">Log in.</a>
+
+{% endblock %}
