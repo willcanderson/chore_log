@@ -8,7 +8,7 @@ from django.db import IntegrityError
 
 # Create your views here.
 
-def get_log_and_balance(user):
+def get_log_and_balance(user, log_limit=None):
     work = user.work_done.all().annotate(
         log_name=F('chore__name'),
         type=Value("work"),
@@ -19,7 +19,7 @@ def get_log_and_balance(user):
         type=Value("play"),
         time_value=F('minutes_played')
         ).values('log_name', 'date_logged', 'type', 'time_value')
-    log_items = work.union(play).order_by("-date_logged")
+    log_items = work.union(play).order_by("-date_logged")[:log_limit]
     # If no work or play has been logged yet, assign 0 value
     work_balance = work.aggregate(Sum('time_value'))['time_value__sum'] or 0
     play_balance = play.aggregate(Sum('time_value'))['time_value__sum'] or 0
@@ -47,7 +47,7 @@ def index(request):
         })
 
         if request.user.user_type == 'CHILD':
-            log_items, balance = get_log_and_balance(request.user)
+            log_items, balance = get_log_and_balance(request.user, 10)
             return render(request, "index-for-children.html", {
                 "log_items": log_items,
                 "balance": balance
@@ -153,6 +153,8 @@ def full_log(request, username):
         "balance": balance,
         "username": log_username
     })
+
+    # TODO: Either paginate or implement endless scroll
 
 def log_chore(request):
     pass

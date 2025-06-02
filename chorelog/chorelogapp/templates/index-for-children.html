@@ -15,7 +15,9 @@
         <td>{{ item.time_value }}</td>
     </tr>
     {% endfor %}
-</table>
+  </table>
   {% endif %}
+
+  <a href="{% url 'full-log' username=user.username %}">View Full Log</a>
   
 {% endblock %}
