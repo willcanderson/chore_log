@@ -27,8 +27,8 @@ The front end is where I have the most experience, and I enjoy keeping things li
 
 ## File By File
 
-- models.py
-- views.py
+- models.py: 
+- views.py: first time returning two values from one function, first time rendering different templates based on user type, first time limiting querysets
 - forms.py
 - tests.py
 - templates
