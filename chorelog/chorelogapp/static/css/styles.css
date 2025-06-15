@@ -15,6 +15,14 @@ nav {
     background: var(--purple-6);
 }
 
+.log-button-wrapper {
+    display: flex;
+    justify-content: space-between;
+}
+
+.balance {
+    font-size: var(--font-size-5)
+}
 
 /* NAV */
 
@@ -31,13 +39,6 @@ nav li {
 
 nav a {
     color: var(--gray-0);
-}
-
-
-/* TYPOGRAPHY */
-
-.balance {
-    font-size: var(--font-size-5)
 }
 
 
@@ -71,11 +72,6 @@ td {
 
 
 /* DIALOGS */
-
-.log-button-wrapper {
-    display: flex;
-    justify-content: space-between;
-}
 
 .dialog-close {
     display: block;
