@@ -15,6 +15,10 @@ class LogWorkForm(ModelForm):
         model = Work
         fields = ['chore']
 
+    def __init__(self, *args, **kwargs):
+        super(LogWorkForm, self).__init__(*args, **kwargs)
+        self.fields['chore'].queryset = self.fields['chore'].queryset.order_by('name')
+
 def get_log_and_balance(user, log_limit=None):
     work = user.work_done.all().annotate(
         log_name=F('chore__name'),
