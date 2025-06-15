@@ -6,8 +6,10 @@
 
   <p>Balance: {{ balance }}</p>
 
-  <button onclick="document.getElementById('log-work-dialog').showModal()">Log chore</button>
-  <button onclick="document.getElementById('log-play-dialog').showModal()">Log play</button>
+  <div class="log-button-wrapper">
+    <button onclick="document.getElementById('log-work-dialog').showModal()">Log chore</button>
+    <button onclick="document.getElementById('log-play-dialog').showModal()">Log play</button>
+  </div>
   
   {% if log_items %}
   <table>
@@ -21,10 +23,10 @@
   </table>
   {% endif %}
 
-  <a href="{% url 'full-log' username=user.username %}">View Full Log</a>
+  <a href="{% url 'full-log' username=user.username %}" class="btn">View Full Log</a>
 
   <dialog id="log-work-dialog">
-    <button autofocus onclick="this.closest('dialog').close()">Close</button>
+    <button class="dialog-close" autofocus onclick="this.closest('dialog').close()">Close</button>
     <form action="{% url 'log_chore' %}" method="post">
       {% csrf_token %}
       {{ log_work_form }}
@@ -33,7 +35,7 @@
   </dialog>
 
   <dialog id="log-play-dialog">
-    <button autofocus onclick="this.closest('dialog').close()">Close</button>
+    <button class="dialog-close" autofocus onclick="this.closest('dialog').close()">Close</button>
     <form action="{% url 'log_play' %}" method="post">
       {% csrf_token %}
       {{ log_play_form }}

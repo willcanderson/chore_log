@@ -1,7 +1,39 @@
+main > *,
+dialog * { 
+    margin-block: var(--size-2);
+ }
+
 nav {
     background: var(--purple-6);
 }
 
+nav ul {
+    display: flex;
+    justify-content: space-between;
+    padding-inline: var(--size-8);
+    padding-block: var(--size-2);
+}
+
+nav li {
+    list-style: none;
+}
+
 nav a {
     color: var(--gray-0);
+}
+
+main {
+    margin: var(--size-2) auto;
+    width: fit-content;
+}
+
+.log-button-wrapper {
+    display: flex;
+    justify-content: space-between;
+}
+
+.dialog-close {
+    display: block;
+    margin-left: auto;
+    margin-bottom: var(--size-8);
 }
