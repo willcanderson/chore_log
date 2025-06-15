@@ -8,7 +8,7 @@
   <h2>Children</h2>
   <ul>
     {% for child in child_list %}
-    <li><a href="{% url 'full-log' child.username %}">{{ child.username }}</a>, {{ child.balance }} minutes</li>
+    <li><a href="{% url 'full-log' child.username %}">{{ child.username }}</a> has {{ child.balance }} minutes</li>
     {% endfor %}
   </ul>
   {% endif %}
@@ -17,9 +17,20 @@
   <h2>Chores</h2>
   <ul>
     {% for chore in chores %}
-    <li>{{ chore.name }}</li>
+    <li>{{ chore.name }}, worth {{ chore.minute_value }} min</li>
     {% endfor %}
   </ul>
   {% endif %}
+
+  <button class="define-chore-button" onclick="document.getElementById('define-chore-dialog').showModal()">New chore</button>
+
+  <dialog id="define-chore-dialog">
+    <button class="dialog-close" autofocus onclick="this.closest('dialog').close()">Close</button>
+    <form action="{% url 'define_chore' %}" method="post">
+      {% csrf_token %}
+      {{ define_chore_form }}
+      <input type="submit">
+    </form>
+  </dialog>
 
 {% endblock %}

@@ -28,6 +28,11 @@ class LogPlayForm(ModelForm):
         super().__init__(*args, **kwargs)
         self.fields["game"].widget.attrs.update({"list": "game-titles"})
 
+class DefineChoreForm(ModelForm):
+    class Meta:
+        model = Chore_Definition
+        fields = ['name', 'minute_value']
+
 def get_log_and_balance(user, log_limit=None):
     work = user.work_done.all().annotate(
         log_name=F('chore__name'),
@@ -59,11 +64,12 @@ def index(request):
                     'balance': balance
                 }
                 child_list.append(child)
-            chores = request.user.defined_chores.all()
+            chores = request.user.defined_chores.all().order_by('name')
 
             return render(request, "index-for-parents.html", {
                 'child_list': child_list,
                 "chores": chores,
+                "define_chore_form": DefineChoreForm(),
         })
 
         if request.user.user_type == 'CHILD':
@@ -211,4 +217,16 @@ def log_play(request):
     return redirect(reverse('index'))
 
 def define_chore(request):
-    pass
+    if request.method == 'POST':
+        form = DefineChoreForm(request.POST)
+
+        if not form.is_valid():
+            messages.error(request, "Invalid")
+            return redirect(reverse('index'))
+        
+        name = form.cleaned_data["name"]
+        minute_value = form.cleaned_data["minute_value"]
+        entry = Chore_Definition(name=name, minute_value=minute_value, defined_by=request.user)
+        entry.save()
+
+    return redirect(reverse('index'))
