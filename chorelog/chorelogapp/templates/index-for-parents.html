@@ -8,7 +8,7 @@
   <h2>Children</h2>
   <ul>
     {% for child in child_list %}
-    <li>{{ child.username }}, {{ child.balance }}</li>
+    <li><a href="{% url 'full-log' child.username %}">{{ child.username }}</a>, {{ child.balance }} minutes</li>
     {% endfor %}
   </ul>
   {% endif %}
