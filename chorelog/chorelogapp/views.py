@@ -6,8 +6,14 @@ from django.contrib import messages
 from django.db.models import Value, F, Sum
 from django.db import IntegrityError
 from django.core.paginator import Paginator
+from django.forms import ModelForm
 
 # Create your views here.
+
+class LogWorkForm(ModelForm):
+    class Meta:
+        model = Work
+        fields = ['chore']
 
 def get_log_and_balance(user, log_limit=None):
     work = user.work_done.all().annotate(
@@ -51,7 +57,8 @@ def index(request):
             log_items, balance = get_log_and_balance(request.user, 10)
             return render(request, "index-for-children.html", {
                 "log_items": log_items,
-                "balance": balance
+                "balance": balance,
+                "log_work_form": LogWorkForm()
         })
 
     return render(request, "start.html")
@@ -161,7 +168,18 @@ def full_log(request, username):
     })
 
 def log_chore(request):
-    pass
+    if request.method == 'POST':
+        form = LogWorkForm(request.POST)
+
+        if not form.is_valid():
+            messages.error(request, "Invalid")
+            return redirect(reverse('index'))
+        
+        chore = form.cleaned_data["chore"]
+        entry = Work(chore=chore, done_by=request.user)
+        entry.save()
+
+    return redirect(reverse('index'))
 
 def log_play(request):
     pass

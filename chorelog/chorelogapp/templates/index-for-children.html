@@ -5,6 +5,8 @@
   <h1>Hello, {{ user.username }}</h1>
 
   <p>Balance: {{ balance }}</p>
+
+  <button onclick="document.getElementById('log-work-dialog').showModal()">Log chore</button>
   
   {% if log_items %}
   <table>
@@ -19,5 +21,14 @@
   {% endif %}
 
   <a href="{% url 'full-log' username=user.username %}">View Full Log</a>
+
+  <dialog id="log-work-dialog">
+    <button autofocus onclick="this.closest('dialog').close()">Close</button>
+    <form action="{% url 'log_chore' %}" method="post">
+      {% csrf_token %}
+      {{ log_work_form }}
+      <input type="submit">
+    </form>
+  </dialog>
   
 {% endblock %}
