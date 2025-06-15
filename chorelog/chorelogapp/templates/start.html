@@ -3,6 +3,6 @@
 {% block content %}
   <h1>Hello</h1>
   <p><a href="{% url 'login' %}">Log in</a></p>
-  <p>Register as a child</p>
-  <p>Register as a parent</p>
+  <p><a href="{% url 'register-child' %}">Register as a child</a></p>
+  <p><a href="{% url 'register-parent' %}">Register as a parent</a></p>
 {% endblock %}
