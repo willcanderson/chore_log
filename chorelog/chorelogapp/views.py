@@ -5,6 +5,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.db.models import Value, F, Sum
 from django.db import IntegrityError
+from django.core.paginator import Paginator
 
 # Create your views here.
 
@@ -148,13 +149,16 @@ def full_log(request, username):
            
     log_username = log_user.username
     log_items, balance = get_log_and_balance(log_user)
+
+    paginator = Paginator(log_items, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     return render(request, "full-log.html", {
-        "log_items": log_items,
+        "page_obj": page_obj,
         "balance": balance,
         "username": log_username
     })
-
-    # TODO: Either paginate or implement endless scroll
 
 def log_chore(request):
     pass
