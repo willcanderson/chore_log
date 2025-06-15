@@ -1,5 +1,9 @@
 /* MAIN LAYOUT */
 
+@view-transition {
+    navigation: auto;
+  }
+
 main > *,
 dialog * { 
     margin-block: var(--size-2);
@@ -20,6 +24,10 @@ nav {
     justify-content: space-between;
 }
 
+h1 {
+    font-size: var(--font-size-2);
+}
+
 .balance {
     font-size: var(--font-size-5)
 }
@@ -29,14 +37,36 @@ nav {
 nav ul {
     display: flex;
     justify-content: space-between;
-    padding-inline: var(--size-8);
     padding-block: var(--size-2);
+}
+
+.main-nav ul {
+    padding-inline: var(--size-8);
+}
+
+.pager-nav ul {
+    padding-inline: var(--size-2);
+    justify-content: space-between;
+}
+
+.pager-nav li {
+    padding-inline: 0;
+}
+
+.pager-nav .previous,
+.pager-nav .next {
+    flex: 1;
+}
+
+.pager-nav .next {
+    text-align: right;
 }
 
 nav li {
     list-style: none;
 }
 
+nav, 
 nav a {
     color: var(--gray-0);
 }
