@@ -73,7 +73,7 @@ def index(request):
         })
 
         if request.user.user_type == 'CHILD':
-            log_items, balance = get_log_and_balance(request.user, 10)
+            log_items, balance = get_log_and_balance(request.user, 5)
             return render(request, "index-for-children.html", {
                 "log_items": log_items,
                 "balance": balance,
