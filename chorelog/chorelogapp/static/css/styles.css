@@ -5,6 +5,7 @@
   }
 
 main > *,
+form > *,
 dialog * { 
     margin-block: var(--size-2);
  }
