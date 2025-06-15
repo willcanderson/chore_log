@@ -7,6 +7,7 @@
   <p>Balance: {{ balance }}</p>
 
   <button onclick="document.getElementById('log-work-dialog').showModal()">Log chore</button>
+  <button onclick="document.getElementById('log-play-dialog').showModal()">Log play</button>
   
   {% if log_items %}
   <table>
@@ -30,5 +31,24 @@
       <input type="submit">
     </form>
   </dialog>
+
+  <dialog id="log-play-dialog">
+    <button autofocus onclick="this.closest('dialog').close()">Close</button>
+    <form action="{% url 'log_play' %}" method="post">
+      {% csrf_token %}
+      {{ log_play_form }}
+      <input type="submit">
+    </form>
+  </dialog>
+
+  {% if log_items %}
+  <datalist id="game-titles">
+    {% for item in log_items %}
+      {% if item.type == 'play' %} 
+        <option>{{ item.log_name }}</option>
+      {% endif %}
+    {% endfor %}
+  </datalist>
+  {% endif %}
   
 {% endblock %}

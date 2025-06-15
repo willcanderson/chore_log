@@ -19,6 +19,15 @@ class LogWorkForm(ModelForm):
         super(LogWorkForm, self).__init__(*args, **kwargs)
         self.fields['chore'].queryset = self.fields['chore'].queryset.order_by('name')
 
+class LogPlayForm(ModelForm):
+    class Meta:
+        model = Play
+        fields = ['game', 'minutes_played']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["game"].widget.attrs.update({"list": "game-titles"})
+
 def get_log_and_balance(user, log_limit=None):
     work = user.work_done.all().annotate(
         log_name=F('chore__name'),
@@ -62,7 +71,8 @@ def index(request):
             return render(request, "index-for-children.html", {
                 "log_items": log_items,
                 "balance": balance,
-                "log_work_form": LogWorkForm()
+                "log_work_form": LogWorkForm(),
+                "log_play_form": LogPlayForm(),
         })
 
     return render(request, "start.html")
@@ -186,7 +196,19 @@ def log_chore(request):
     return redirect(reverse('index'))
 
 def log_play(request):
-    pass
+    if request.method == 'POST':
+        form = LogPlayForm(request.POST)
+
+        if not form.is_valid():
+            messages.error(request, "Invalid")
+            return redirect(reverse('index'))
+        
+        game = form.cleaned_data["game"]
+        minutes_played = form.cleaned_data["minutes_played"]
+        entry = Play(game=game, minutes_played=minutes_played, child=request.user)
+        entry.save()
+
+    return redirect(reverse('index'))
 
 def define_chore(request):
     pass

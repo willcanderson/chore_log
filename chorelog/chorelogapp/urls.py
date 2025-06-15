@@ -9,4 +9,5 @@ urlpatterns = [
     path('register-child/', views.register_child, name='register-child'),
     path('log/<str:username>', views.full_log, name='full-log'),
     path('submit_work', views.log_chore, name='log_chore'),
+    path('submit_play', views.log_play, name='log_play'),
 ]
