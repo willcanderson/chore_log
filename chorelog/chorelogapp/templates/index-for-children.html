@@ -4,11 +4,11 @@
 
   <h1>Hello, {{ user.username }}</h1>
 
-  <p>Balance: {{ balance }}</p>
+  <p class="balance">Balance: {{ balance }} minutes</p>
 
   <div class="log-button-wrapper">
-    <button onclick="document.getElementById('log-work-dialog').showModal()">Log chore</button>
-    <button onclick="document.getElementById('log-play-dialog').showModal()">Log play</button>
+    <button class="log-work-button" onclick="document.getElementById('log-work-dialog').showModal()">Log chore</button>
+    <button class="log-play-button" onclick="document.getElementById('log-play-dialog').showModal()">Log play</button>
   </div>
   
   {% if log_items %}
@@ -16,8 +16,8 @@
     {% for item in log_items %}
     <tr class="{{item.type}}">
         <td>{{ item.log_name }}</td>
-        <td>{{ item.date_logged }}</td>
-        <td>{{ item.time_value }}</td>
+        <td>{{ item.date_logged|date:"SHORT_DATE_FORMAT" }}</td>
+        <td class="time-value">{{ item.time_value }}</td>
     </tr>
     {% endfor %}
   </table>

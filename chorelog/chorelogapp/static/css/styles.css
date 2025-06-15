@@ -1,11 +1,22 @@
+/* MAIN LAYOUT */
+
 main > *,
 dialog * { 
     margin-block: var(--size-2);
  }
 
+main {
+    margin: var(--size-2) auto;
+    width: fit-content;
+    padding-inline: var(--size-2);
+}
+
 nav {
     background: var(--purple-6);
 }
+
+
+/* NAV */
 
 nav ul {
     display: flex;
@@ -22,10 +33,44 @@ nav a {
     color: var(--gray-0);
 }
 
-main {
-    margin: var(--size-2) auto;
-    width: fit-content;
+
+/* TYPOGRAPHY */
+
+.balance {
+    font-size: var(--font-size-5)
 }
+
+
+/* TABLE */
+
+table {
+    width: 100%;
+}
+
+.play td,
+.log-play-button {
+    background: var(--blue-1);
+}
+
+.work td,
+.log-work-button {
+    background: var(--green-1);
+}
+
+.play .time-value::before {
+    content: "-";
+}
+
+td {
+    text-align: left;
+}
+
+.time-value {
+    text-align: right;
+}
+
+
+/* DIALOGS */
 
 .log-button-wrapper {
     display: flex;

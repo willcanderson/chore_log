@@ -4,15 +4,15 @@
 
   <h1>{{ username }}</h1>
 
-  <p>Balance: {{ balance }}</p>
+  <p class="balance">Balance: {{ balance }} minutes</p>
   
   {% if page_obj %}
   <table>
     {% for item in page_obj %}
     <tr class="{{item.type}}">
         <td>{{ item.log_name }}</td>
-        <td>{{ item.date_logged }}</td>
-        <td>{{ item.time_value }}</td>
+        <td>{{ item.date_logged|date:"SHORT_DATE_FORMAT" }}</td>
+        <td class="time-value">{{ item.time_value }}</td>
     </tr>
     {% endfor %}
     </table>
