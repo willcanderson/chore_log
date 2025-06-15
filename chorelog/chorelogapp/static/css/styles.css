@@ -5,8 +5,7 @@
   }
 
 main > *,
-form > *,
-dialog * { 
+form > * { 
     margin-block: var(--size-2);
  }
 
@@ -17,7 +16,7 @@ main {
 }
 
 nav {
-    background: var(--purple-6);
+    background: var(--blue-7);
 }
 
 .log-button-wrapper {
@@ -79,9 +78,8 @@ table {
     width: 100%;
 }
 
-.play td,
-.log-play-button {
-    background: var(--blue-1);
+.play td {
+    background: var(--blue-0);
 }
 
 .work td,
@@ -108,4 +106,22 @@ td {
     display: block;
     margin-left: auto;
     margin-bottom: var(--size-8);
+}
+
+
+/* FORMS */
+label {
+    display: block;
+}
+
+.log-play-button {
+    background: var(--blue-7);
+    color: white;
+    text-shadow: none;
+}
+
+.log-work-button {
+    background: var(--green-7);
+    color: white;
+    text-shadow: none;
 }
