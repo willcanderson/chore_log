@@ -15,12 +15,12 @@ class Chore_Definition(models.Model):
     defined_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='defined_chores')
 
     def __str__(self):
-        return f"Chore: {self.name}, worth {self.minute_value} minutes"
+        return f"{self.name}, +{self.minute_value} min"
 
 class Work(models.Model):
     chore = models.ForeignKey(Chore_Definition, on_delete=models.SET_NULL, null=True)
     done_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='work_done')
-    date_logged = models.DateField(auto_now_add=True)
+    date_logged = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"Chore: {self.chore.name} logged by {self.done_by} on {self.date_logged}"
@@ -29,7 +29,7 @@ class Play(models.Model):
     game = models.CharField(max_length=50)
     minutes_played = models.IntegerField()
     child = models.ForeignKey(User, on_delete=models.CASCADE, related_name='play_done')
-    date_logged = models.DateField(auto_now_add=True)
+    date_logged = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"{self.game} played by {self.child} for {self.minutes_played} minutes on {self.date_logged}"
