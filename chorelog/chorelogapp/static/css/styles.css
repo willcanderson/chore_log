@@ -108,6 +108,19 @@ td {
     margin-bottom: var(--size-8);
 }
 
+.timer-wrapper {
+    display: flex;
+    justify-content: end;
+    gap: 0.5em;
+    align-items: center;
+}
+
+#timer-start-button,
+#timer-stop-button
+ {
+    font-size: var(--font-size-0)
+}
+
 
 /* FORMS */
 label {

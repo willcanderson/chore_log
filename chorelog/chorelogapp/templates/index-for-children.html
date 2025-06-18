@@ -39,6 +39,16 @@
     <form action="{% url 'log_play' %}" method="post">
       {% csrf_token %}
       {{ log_play_form }}
+
+      <!-- TIMER -->
+      <div class="timer-wrapper">
+        <div id="timer-stopwatch"><span id="timer-stopwatch__minutes">00</span>:<span id="timer-stopwatch__seconds">00</span></div>
+        <button type="button" id="timer-start-button">Start timer</button>
+        <button type="button" id="timer-stop-button">Stop timer</button>
+      </div>
+
+
+
       <input type="submit">
     </form>
   </dialog>
@@ -52,5 +62,64 @@
     {% endfor %}
   </datalist>
   {% endif %}
+
+  <script>
+    var stopwatch = document.getElementById('timer-stopwatch');
+    var startButton = document.getElementById('timer-start-button');
+    var stopButton = document.getElementById('timer-stop-button');
+    var timerMinutes = document.getElementById('timer-stopwatch__minutes');
+    var timerSeconds = document.getElementById('timer-stopwatch__seconds');
+    var minutesField = document.getElementById('id_minutes_played');
+    var counter = 0;
+    var counting = false;
+
+    stopwatch.style.display = "none";
+    stopButton.style.display = "none";
+
+    var t = window.setInterval(function() {
+      if (counting) {
+        counter++;
+        var s = counter;
+        convertSeconds(Math.floor(s));
+      }
+    }, 1000);
+
+    startButton.addEventListener("click", function () {
+      counting = true;
+      startButton.style.display = "none";
+      stopButton.style.display = "inline-flex";
+      stopwatch.style.display = "inline-flex";
+    });
+
+    stopButton.addEventListener("click", function () {
+      counting = false;
+      stopButton.style.display = "none";
+      startButton.style.display = "inline-flex";
+      autofillMinutes();
+      resetTimer();
+    });
+
+    function resetTimer() {
+      counter = 0;
+      timerMinutes.textContent = "00";
+      timerSeconds.textContent = "00";
+    }
+
+    function convertSeconds(s) {
+      var minutes = Math.floor(((s % 86400) % 3600) / 60);
+      var seconds = ((s % 86400) % 3600) % 60;
+      
+      if (minutes < 10) {minutes = "0" + minutes;}
+      if (seconds < 10) {seconds = "0" + seconds;}
+      
+      timerMinutes.textContent = minutes;
+      timerSeconds.textContent = seconds;
+    }
+
+    function autofillMinutes() {
+      var minutes = Math.floor(((counter % 86400) % 3600) / 60);
+      minutesField.value = minutes;
+    }
+  </script>
   
 {% endblock %}
