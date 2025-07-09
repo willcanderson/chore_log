@@ -121,6 +121,19 @@ td {
     font-size: var(--font-size-0)
 }
 
+dialog {
+    transition: opacity 0.25s;
+    opacity: 0;
+  
+    &[open] {
+      opacity: 1;
+  
+      @starting-style {
+        opacity: 0;
+      }
+    }
+  }
+
 
 /* FORMS */
 label {
