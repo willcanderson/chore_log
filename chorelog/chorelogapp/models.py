@@ -33,3 +33,6 @@ class Play(models.Model):
 
     def __str__(self):
         return f"{self.game} played by {self.child} for {self.minutes_played} minutes on {self.date_logged}"
+
+    def is_valid_play(self):
+        return self.minutes_played > 0 and self.game is not None

@@ -212,6 +212,10 @@ def log_play(request):
         game = form.cleaned_data["game"]
         minutes_played = form.cleaned_data["minutes_played"]
         entry = Play(game=game, minutes_played=minutes_played, child=request.user)
+
+        if not entry.is_valid_play():
+            messages.error(request, "Invalid play")
+            return redirect(reverse('index'))
         entry.save()
 
     return redirect(reverse('index'))
