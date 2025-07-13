@@ -2,7 +2,54 @@
 
 @view-transition {
     navigation: auto;
+    types: forwards, backwards;
   }
+
+html:active-view-transition-type(forwards, backwards) {
+	:root {
+		view-transition-name: none;
+	}
+    main { 
+        view-transition-name: main;
+    }
+	.pagination {
+		view-transition-name: pagination;
+	}
+}
+
+html:active-view-transition-type(forwards) {
+	&::view-transition-old(main) {
+		animation-name: slide-out-to-left;
+	}
+	&::view-transition-new(main) {
+		animation-name: slide-in-from-right;
+	}
+}
+
+html:active-view-transition-type(backwards) {
+	&::view-transition-old(main) {
+		animation-name: slide-out-to-right;
+	}
+	&::view-transition-new(main) {
+		animation-name: slide-in-from-left;
+	}
+}
+
+@keyframes slide-in-from-right { 
+    from{transform:translateX(+10vw); opacity: 0;} 
+}
+
+@keyframes slide-out-to-left{ 
+    to  {transform:translateX(-10vw); opacity: 0;} 
+}
+
+@keyframes slide-out-to-right { 
+    to{transform:translateX(+10vw); opacity: 0;} 
+}
+
+@keyframes slide-in-from-left{ 
+    from  {transform:translateX(-10vw); opacity: 0;} 
+}
 
 main > *,
 form > * { 
