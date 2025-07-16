@@ -14,10 +14,10 @@ class LogWorkForm(ModelForm):
     class Meta:
         model = Work
         fields = ['chore']
-
-    def __init__(self, *args, **kwargs):
-        super(LogWorkForm, self).__init__(*args, **kwargs)
-        self.fields['chore'].queryset = self.fields['chore'].queryset.order_by('name')
+    def __init__(self, user=None, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if user:
+            self.fields['chore'].queryset = Chore_Definition.objects.filter(defined_by = user.parent)
 
 class LogPlayForm(ModelForm):
     class Meta:
@@ -74,10 +74,13 @@ def index(request):
 
         if request.user.user_type == 'CHILD':
             log_items, balance = get_log_and_balance(request.user, 5)
+            print("before form")
+            log_work_form = LogWorkForm(user=request.user, data=request.POST or None)
+            print("after form")
             return render(request, "index-for-children.html", {
                 "log_items": log_items,
                 "balance": balance,
-                "log_work_form": LogWorkForm(),
+                "log_work_form": log_work_form,
                 "log_play_form": LogPlayForm(),
         })
 
