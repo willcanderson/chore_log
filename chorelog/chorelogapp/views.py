@@ -192,7 +192,7 @@ def full_log(request, username):
 
 def log_chore(request):
     if request.method == 'POST':
-        form = LogWorkForm(request.POST)
+        form = LogWorkForm(user=request.user, data=request.POST or None)
 
         if not form.is_valid():
             messages.error(request, "Invalid")
